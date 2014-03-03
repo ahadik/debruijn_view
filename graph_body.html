@@ -1,0 +1,108 @@
+	var svg1;
+	var svg2;
+	
+	function render(linkdata, divTarget){
+
+		links = JSON.parse(JSON.stringify(linkdata));
+		
+		
+		nodes = {};
+
+		for(link in links.kmers){
+			//link.source = nodes[link.source] || (
+			links.kmers[link].source = nodes[links.kmers[link].source] || (nodes[links.kmers[link].source] = {name: links.kmers[link].source});
+			//link.target = nodes[link.target] || (
+			links.kmers[link].target = nodes[links.kmers[link].target] || (nodes[links.kmers[link].target] = {name: links.kmers[link].target});
+		};
+	
+		var w = window,
+			d = document,
+			e = d.documentElement,
+			g = d.getElementsByTagName('body')[0],
+			x = w.innerWidth || e.clientWidth || g.clientWidth,
+			divx = $("#graph").width();
+			y = window.innerHeight || document.body.clientHeight;
+		
+		width = divx,
+		height = y;
+		
+		force = d3.layout.force()
+			.nodes(d3.values(nodes))
+			.links(links.kmers)
+			.size([width, height])
+			.linkDistance(120)
+			.charge(-500)
+			.on("tick", tick)
+			.start();
+
+		svg1 = d3.select(divTarget).append("svg")
+			.attr("width", width)
+			.attr("height", height);
+			
+		link = svg1.selectAll(".link")
+			.data(force.links())
+			.enter().append("line")
+			.attr("class", "link");
+			
+		function mouseover() {
+				d3.select(this).select("circle").transition()
+				.duration(750)
+				.attr("r", 40);
+			}
+
+			function mouseout() {
+				d3.select(this).select("circle").transition()
+				.duration(750)
+				.attr("r", 15);
+				node.empty();
+				node.empty();
+			}
+
+		node = svg1.selectAll(".node")
+			.data(force.nodes())
+			.enter().append("g")
+			.attr("class", "node")
+			.on("mouseover", mouseover)
+			.on("mouseout", mouseout)
+			.on("onclick", onclick)
+			.call(force.drag);
+
+			
+		
+		node.append("circle")
+			.attr("r", 15);
+			
+		node.append("text")
+			.attr("x", 30)
+			.attr("dy", 0)
+			.text(function(d) { return d.name; })
+			.style("font-size", "16px")
+			.style("font-family", "omnes-pro");
+			
+		function tick() {
+			link
+			.attr("x1", function(d) { return d.source.x; })
+			.attr("y1", function(d) { return d.source.y; })
+			.attr("x2", function(d) { return d.target.x; })
+			.attr("y2", function(d) { return d.target.y; });
+		
+			node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+		}
+	}
+	window.onload = function(){
+			render(graph_data, "#graph");
+		}
+</script>
+<div id="container">
+<div class="wrapper">
+<h1>DeBruijn View</a></h1>
+<h2>A visualization of the Debruijn graph built from k-mers of an input text.</h2>
+<a href="/start"><p>Enter New Text</p></a>
+</div>
+<div id="graphWrap">
+<div id="graph">
+</div>
+</div>
+</div>
+</div>
+</body>

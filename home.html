@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; 'charset=UTF-8" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://d3js.org/d3.v2.js?2.9.1"></script>
+		<script type="text/javascript" src="//use.typekit.net/gwi3aha.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+		<link rel="stylesheet" href="style.css" title="Styling" type="text/css" media="screen" charset="utf-8">
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header" class="center">
+				<h1>Debruijn View</h1>
+				<h2>A visualizer for Debruin Graphs constructed from input text.</h2>
+			</div>
+			<div id="form_wrapper" class="center">
+				<div id="form">
+					<form action="/graph" enctype="multipart/form-data" method="post">
+						<textarea type="text" name="sourceText" id="textentry">Copy and paste your desired source text here.</textarea><br>
+						<p>Desired k-mer length.</p>
+						<div id="kmer_wrapper" class="center">
+							<input type="text" name="kvalue" id="kEntry" value="8"><br>
+							<input type="submit" class="submit" value="Submit">
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
